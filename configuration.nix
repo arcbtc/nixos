@@ -26,6 +26,7 @@
     signal-desktop
     gitkraken
     jitsi-meet-electron
+    firefox-gnome-theme
   ];
 
   # Bootloader
@@ -39,6 +40,7 @@
   # Timezone and locale
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
+
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_GB.UTF-8";
     LC_IDENTIFICATION = "en_GB.UTF-8";
@@ -53,12 +55,15 @@
 
   # X11 and GNOME
   services.xserver.enable = true;
+
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
+
   services.xserver.xkb = {
     layout = "gb";
     variant = "";
   };
+
   console.keyMap = "uk";
 
   # Printing
@@ -66,7 +71,9 @@
 
   # Audio
   services.pulseaudio.enable = false;
+
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -78,30 +85,60 @@
   users.users.ben = {
     isNormalUser = true;
     description = "Daedalus";
-    extraGroups = [ "networkmanager" "wheel" "audio" ];
+
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+    ];
   };
 
   # Firefox
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+
+    preferences = {
+      # Compact/simple UI
+      "browser.uidensity" = 1;
+      "browser.compactmode.show" = true;
+
+      # Clean new tab page
+      "browser.newtabpage.activity-stream.feeds.topsites" = false;
+      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+      "browser.newtabpage.activity-stream.showSponsored" = false;
+      "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+
+      # Hide clutter
+      "browser.toolbars.bookmarks.visibility" = "never";
+      "browser.tabs.tabmanager.enabled" = false;
+
+      # Better GNOME integration
+      "widget.use-xdg-desktop-portal.file-picker" = 1;
+    };
+  };
 
   # Make Firefox the default browser
+  xdg.mime.enable = true;
+
   xdg.mime.defaultApplications = {
     "text/html" = [ "firefox.desktop" ];
+    "application/xhtml+xml" = [ "firefox.desktop" ];
     "x-scheme-handler/http" = [ "firefox.desktop" ];
     "x-scheme-handler/https" = [ "firefox.desktop" ];
     "x-scheme-handler/about" = [ "firefox.desktop" ];
     "x-scheme-handler/unknown" = [ "firefox.desktop" ];
   };
 
-  # Enable experimental Nix CLI features reproducibly
+  # Enable experimental Nix features
   nix = {
     package = pkgs.nix;
+
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
   };
 
-  # Enable Flatpak service
+  # Flatpak
   services.flatpak.enable = true;
 
   system.stateVersion = "25.11";
