@@ -14,6 +14,10 @@
     desktop-file-utils
 
     htop
+    uv
+    python312
+    gcc
+    protonvpn-gui
     obs-studio
     davinci-resolve
     gradle
@@ -29,6 +33,10 @@
     firefox-gnome-theme
     flatpak
   ];
+
+  environment.sessionVariables = {
+    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+  };
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
