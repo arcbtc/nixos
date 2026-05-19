@@ -27,6 +27,7 @@
     gitkraken
     jitsi-meet-electron
     firefox-gnome-theme
+    flatpak
   ];
 
   # Bootloader
