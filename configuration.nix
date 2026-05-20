@@ -22,6 +22,8 @@
     davinci-resolve
     gradle
     git
+    gnumake
+    nodejs
     vscode
     spotify
     gimp
