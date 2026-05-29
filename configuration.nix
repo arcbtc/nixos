@@ -12,9 +12,14 @@
     adwaita-icon-theme
     shared-mime-info
     desktop-file-utils
-
+    
+    marp-cli
     htop
     uv
+    gh
+    rustc
+    cargo
+    poetry
     python312
     gcc
     protonvpn-gui
@@ -22,8 +27,11 @@
     davinci-resolve
     gradle
     git
+    google-chrome
     gnumake
     nodejs
+    alsa-utils
+    fastfetch
     vscode
     spotify
     gimp
