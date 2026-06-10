@@ -1,11 +1,15 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./cachix.nix
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
+  programs.nix-ld.enable = true;
+  
   # System packages
   environment.systemPackages = with pkgs; [
     hicolor-icon-theme
@@ -17,6 +21,7 @@
     htop
     uv
     gh
+    bitcoin
     rustc
     cargo
     poetry
