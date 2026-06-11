@@ -6,17 +6,16 @@
     ./cachix.nix
   ];
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   programs.nix-ld.enable = true;
-  
-  # System packages
+
   environment.systemPackages = with pkgs; [
+    cachix
     hicolor-icon-theme
     adwaita-icon-theme
     shared-mime-info
     desktop-file-utils
-    
+
     marp-cli
     htop
     uv
@@ -53,15 +52,12 @@
     LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
   };
 
-  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Networking
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  # Timezone and locale
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
 
@@ -77,9 +73,7 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # X11 and GNOME
   services.xserver.enable = true;
-
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
 
@@ -90,12 +84,9 @@
 
   console.keyMap = "uk";
 
-  # Printing
   services.printing.enable = true;
 
-  # Audio
   services.pulseaudio.enable = false;
-
   security.rtkit.enable = true;
 
   services.pipewire = {
@@ -105,7 +96,6 @@
     pulse.enable = true;
   };
 
-  # User
   users.users.ben = {
     isNormalUser = true;
     description = "Daedalus";
@@ -117,31 +107,22 @@
     ];
   };
 
-  # Firefox
   programs.firefox = {
     enable = true;
 
     preferences = {
-      # Compact/simple UI
       "browser.uidensity" = 1;
       "browser.compactmode.show" = true;
-
-      # Clean new tab page
       "browser.newtabpage.activity-stream.feeds.topsites" = false;
       "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
       "browser.newtabpage.activity-stream.showSponsored" = false;
       "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-
-      # Hide clutter
       "browser.toolbars.bookmarks.visibility" = "never";
       "browser.tabs.tabmanager.enabled" = false;
-
-      # Better GNOME integration
       "widget.use-xdg-desktop-portal.file-picker" = 1;
     };
   };
 
-  # Make Firefox the default browser
   xdg.mime.enable = true;
 
   xdg.mime.defaultApplications = {
@@ -153,16 +134,15 @@
     "x-scheme-handler/unknown" = [ "firefox.desktop" ];
   };
 
-  # Enable experimental Nix features
   nix = {
     package = pkgs.nix;
 
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "ben" ];
+    };
   };
 
-  # Flatpak
   services.flatpak.enable = true;
 
   system.stateVersion = "25.11";
