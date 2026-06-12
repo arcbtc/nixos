@@ -16,6 +16,7 @@
     shared-mime-info
     desktop-file-utils
 
+    gnupg
     marp-cli
     htop
     uv
