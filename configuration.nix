@@ -15,7 +15,7 @@
     adwaita-icon-theme
     shared-mime-info
     desktop-file-utils
-
+    appimage-run
     gnupg
     marp-cli
     htop
