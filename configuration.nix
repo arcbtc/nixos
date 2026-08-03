@@ -1,15 +1,25 @@
 { config, pkgs, ... }:
-
-{
+  let
+    nostrSocial = pkgs.appimageTools.wrapType2 {
+      pname = "nostr-social";
+      version = "latest";
+      src = /home/ben/Apps/Nostr-Social.AppImage;
+    };
+  in
+ {
   imports = [
     ./hardware-configuration.nix
     ./cachix.nix
   ];
-
+  boot.kernelParams = [
+    "existing-option"
+    "nvme_core.default_ps_max_latency_us=0"
+  ];
   nixpkgs.config.allowUnfree = true;
   programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
+    nostrSocial
     cachix
     hicolor-icon-theme
     adwaita-icon-theme
@@ -21,15 +31,17 @@
     htop
     uv
     gh
+    smartmontools
     bitcoin
     rustc
     cargo
     poetry
-    python312
+    # python312
     gcc
     protonvpn-gui
     obs-studio
-    davinci-resolve
+    sqlitebrowser
+    # davinci-resolve
     gradle
     git
     google-chrome
@@ -47,6 +59,7 @@
     jitsi-meet-electron
     firefox-gnome-theme
     flatpak
+    arduino-cli
   ];
 
   environment.sessionVariables = {
@@ -83,6 +96,7 @@
     variant = "";
   };
 
+
   console.keyMap = "uk";
 
   services.printing.enable = true;
@@ -96,15 +110,18 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  virtualisation.docker.enable = true;
 
+  services.tailscale.enable = true;
   users.users.ben = {
     isNormalUser = true;
     description = "Daedalus";
-
     extraGroups = [
       "networkmanager"
       "wheel"
       "audio"
+      "docker"
+      "dialout"
     ];
   };
 
@@ -148,3 +165,4 @@
 
   system.stateVersion = "25.11";
 }
+
