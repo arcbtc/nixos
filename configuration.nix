@@ -21,6 +21,7 @@
   environment.systemPackages = with pkgs; [
     nostrSocial
     cachix
+    android-tools
     hicolor-icon-theme
     adwaita-icon-theme
     shared-mime-info
@@ -39,7 +40,11 @@
     # python312
     gcc
     protonvpn-gui
-    obs-studio
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        droidcam-obs
+      ];
+    })
     sqlitebrowser
     # davinci-resolve
     gradle
@@ -60,6 +65,9 @@
     firefox-gnome-theme
     flatpak
     arduino-cli
+    (python3.withPackages (python-pkgs: with python-pkgs; [
+      pyserial
+    ]))
   ];
 
   environment.sessionVariables = {
