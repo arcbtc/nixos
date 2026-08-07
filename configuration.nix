@@ -68,6 +68,7 @@
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pyserial
     ]))
+    electrum
   ];
 
   environment.sessionVariables = {
